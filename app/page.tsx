@@ -4,10 +4,12 @@ import { LoveStoryTimeline } from '@/components/love-story-timeline';
 import { PhotoGallery } from '@/components/photo-gallery';
 import { RSVPSection } from '@/components/rsvp-section';
 import { Footer } from '@/components/footer';
+import { Navbar } from '@/components/navbar';
 
 export default function Home() {
   return (
     <main className="h-[100dvh] max-h-[100vh] overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth relative bg-background/50 selection:bg-primary/20">
+      <Navbar />
       <HeroSection />
       <WeddingCountdown />
       <LoveStoryTimeline />
