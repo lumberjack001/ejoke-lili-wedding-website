@@ -86,11 +86,8 @@ export function RSVPSection() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Reveal delay={400}>
                 <div className="text-left">
-                  <p className="font-light text-sm uppercase tracking-widest text-muted-foreground mb-1">
-                    Bride
-                  </p>
-                  <p className="text-lg font-serif text-foreground">Lily</p>
-                  <p className="text-muted-foreground font-light">(555) 123-4567</p>
+                  <p className="text-lg font-serif text-foreground">OGHRORO EDAFE</p>
+                  <p className="text-muted-foreground font-light">+234 814 087 3824</p>
                 </div>
               </Reveal>
               <Reveal delay={500}>
@@ -98,11 +95,8 @@ export function RSVPSection() {
               </Reveal>
               <Reveal delay={600}>
                 <div className="text-left">
-                  <p className="font-light text-sm uppercase tracking-widest text-muted-foreground mb-1">
-                    Groom
-                  </p>
-                  <p className="text-lg font-serif text-foreground">Ejoke</p>
-                  <p className="text-muted-foreground font-light">(555) 987-6543</p>
+                  <p className="text-lg font-serif text-foreground">ITOYA SHEM</p>
+                  <p className="text-muted-foreground font-light">+234 814 504 9361</p>
                 </div>
               </Reveal>
             </div>
@@ -182,12 +176,12 @@ export function RSVPSection() {
           {/* Section Header */}
           <div className="text-center lg:text-left mb-8">
             <Reveal delay={200}>
-              <h2 className="text-4xl sm:text-5xl font-serif text-foreground mb-3">
+              <h2 className="text-4xl sm:text-5xl font-serif text-foreground mb-3 text-center">
                 RSVP
               </h2>
             </Reveal>
             <Reveal delay={400}>
-              <p className="text-muted-foreground font-light">
+              <p className="text-muted-foreground font-light text-center">
                 Join us in celebrating love
               </p>
             </Reveal>
