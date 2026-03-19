@@ -2,12 +2,14 @@
 
 import { Heart, Diamond, Calendar } from 'lucide-react';
 import { Reveal } from '@/components/ui/reveal';
+import Image from 'next/image';
 
 interface TimelineEvent {
   icon: React.ReactNode;
   title: string;
   date: string;
   description: string;
+  image?: string;
 }
 
 export function LoveStoryTimeline() {
@@ -18,6 +20,7 @@ export function LoveStoryTimeline() {
       date: '2019',
       description:
         'It all started on a beautiful autumn evening at a coffee shop. Our eyes met across a crowded room, and in that moment, we knew something special was beginning. What started as a conversation over coffee bloomed into the greatest love story of our lives.',
+      image: '/images/coffee_meet.png',
     },
     {
       icon: <Diamond className="w-6 h-6 text-primary" />,
@@ -25,6 +28,7 @@ export function LoveStoryTimeline() {
       date: 'October 26, 2023',
       description:
         'On a starlit evening overlooking the city, he got down on one knee and asked the question we had both been waiting for. With tears of joy and an overwhelming sense of happiness, she said yes. A new chapter of our love story began.',
+      image: '/images/sunset_proposal.png',
     },
     {
       icon: <Calendar className="w-6 h-6 text-primary" />,
@@ -98,8 +102,16 @@ export function LoveStoryTimeline() {
                   </Reveal>
                 </div>
 
-                {/* Empty space for alternate layout */}
-                <div className="hidden sm:block w-full sm:w-1/2" />
+                {/* Media space or Empty space for alternate layout */}
+                <div className="hidden sm:block w-full sm:w-1/2">
+                  <Reveal delay={index * 150 + 400}>
+                    {event.image && (
+                      <div className={`relative w-full aspect-video rounded-xl overflow-hidden shadow-lg ${index % 2 === 0 ? 'ml-8' : 'mr-8'}`}>
+                        <Image src={event.image} alt={event.title} fill className="object-cover" />
+                      </div>
+                    )}
+                  </Reveal>
+                </div>
               </div>
             ))}
           </div>

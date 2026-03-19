@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { SeatReservation } from './seat-reservation';
 import { Check, X } from 'lucide-react';
 import { Reveal } from '@/components/ui/reveal';
+import Image from 'next/image';
 
 type RSVPStatus = 'pending' | 'yes' | 'no' | 'unsure';
 
@@ -85,11 +86,8 @@ export function RSVPSection() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Reveal delay={400}>
                 <div className="text-left">
-                  <p className="font-light text-sm uppercase tracking-widest text-muted-foreground mb-1">
-                    Bride
-                  </p>
-                  <p className="text-lg font-serif text-foreground">Lily</p>
-                  <p className="text-muted-foreground font-light">(555) 123-4567</p>
+                  <p className="text-lg font-serif text-foreground">OGHRORO EDAFE</p>
+                  <p className="text-muted-foreground font-light">+234 814 087 3824</p>
                 </div>
               </Reveal>
               <Reveal delay={500}>
@@ -97,11 +95,8 @@ export function RSVPSection() {
               </Reveal>
               <Reveal delay={600}>
                 <div className="text-left">
-                  <p className="font-light text-sm uppercase tracking-widest text-muted-foreground mb-1">
-                    Groom
-                  </p>
-                  <p className="text-lg font-serif text-foreground">Ejoke</p>
-                  <p className="text-muted-foreground font-light">(555) 987-6543</p>
+                  <p className="text-lg font-serif text-foreground">ITOYA SHEM</p>
+                  <p className="text-muted-foreground font-light">+234 814 504 9361</p>
                 </div>
               </Reveal>
             </div>
@@ -166,25 +161,37 @@ export function RSVPSection() {
   return (
     <section
       id="rsvp-section"
-      className="min-h-[100dvh] w-full flex flex-col justify-center py-20 sm:py-32 bg-white px-4 sm:px-6 lg:px-8 snap-start snap-always"
+      className="min-h-[100dvh] w-full flex flex-col justify-center py-20 sm:py-32 bg-white px-4 sm:px-6 lg:px-8 snap-start snap-always overflow-hidden relative"
     >
-      <div className="w-full max-w-3xl mx-auto space-y-12">
-        {/* Section Header */}
-        <div className="text-center mb-12 sm:mb-16">
-          <Reveal delay={0}>
-            <h2 className="text-4xl sm:text-5xl font-serif text-foreground mb-3">
-              RSVP
-            </h2>
-          </Reveal>
-          <Reveal delay={200}>
-            <p className="text-muted-foreground font-light">
-              Join us in celebrating love
-            </p>
-          </Reveal>
-        </div>
+      <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+        {/* Left side: Photo */}
+        <Reveal delay={0} className="w-full">
+          <div className="relative aspect-[3/4] w-full max-w-md mx-auto lg:max-w-none rounded-2xl overflow-hidden shadow-2xl">
+            <Image src="/images/rsvp_photo.png" alt="Lily and Ejoke" fill className="object-cover" />
+          </div>
+        </Reveal>
 
-        {/* RSVP Content */}
-        {renderContent()}
+        {/* Right side: RSVP Content */}
+        <div className="w-full space-y-12">
+          {/* Section Header */}
+          <div className="text-center lg:text-left mb-8">
+            <Reveal delay={200}>
+              <h2 className="text-4xl sm:text-5xl font-serif text-foreground mb-3 text-center">
+                RSVP
+              </h2>
+            </Reveal>
+            <Reveal delay={400}>
+              <p className="text-muted-foreground font-light text-center">
+                Join us in celebrating love
+              </p>
+            </Reveal>
+          </div>
+
+          {/* RSVP Content Form */}
+          <div className="w-full max-w-xl mx-auto lg:mx-0">
+            {renderContent()}
+          </div>
+        </div>
       </div>
     </section>
   );

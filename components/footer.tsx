@@ -41,17 +41,13 @@ export function Footer() {
           {/* Right: Details */}
           <div className="text-center md:text-right">
             <Reveal delay={800}>
-              <p className="text-sm uppercase tracking-widest text-muted-foreground font-light mb-2">
+              <p className="text-md uppercase tracking-widest text-muted-foreground font-medium mb-2">
                 Venue
               </p>
             </Reveal>
             <Reveal delay={1000}>
-              <p className="text-foreground font-light">
-                The Grand Ballroom
-                <br />
-                123 Love Street
-                <br />
-                City, State 12345
+              <p className="text-muted-foreground font-light">
+                To be Delivered Via E-mail <br /> Once seat reservation is confirmed.
               </p>
             </Reveal>
           </div>
