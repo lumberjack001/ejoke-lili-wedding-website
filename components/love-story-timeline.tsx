@@ -40,7 +40,7 @@ export function LoveStoryTimeline() {
   ];
 
   return (
-    <section className="min-h-[100dvh] w-full flex flex-col justify-center py-20 sm:py-32 bg-white px-4 sm:px-6 lg:px-8 snap-start snap-always relative">
+    <section className="h-[100dvh] overflow-y-auto no-scrollbar w-full flex flex-col py-20 sm:py-32 bg-white px-4 sm:px-6 lg:px-8 snap-start snap-always relative">
       <div className="w-full max-w-4xl mx-auto space-y-16">
         {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16">

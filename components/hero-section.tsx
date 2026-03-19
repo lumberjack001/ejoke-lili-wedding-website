@@ -1,17 +1,28 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Reveal } from '@/components/ui/reveal';
 import Image from 'next/image';
 
 export function HeroSection() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const heroImages = ['/images/hero_1.jpg', '/images/hero_2.jpg'];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 5000); // Transition every 5 seconds
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
+
   const scrollToInvitation = () => {
     const element = document.getElementById('rsvp-section');
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section className="relative min-h-[100dvh] w-full flex flex-col md:flex-row overflow-hidden snap-start snap-always">
+    <section className="relative h-[100dvh] overflow-y-auto no-scrollbar w-full flex flex-col md:flex-row overflow-x-hidden snap-start snap-always">
 
       {/* Left Side: Content */}
       <div className="w-full md:w-1/2 flex items-center justify-center py-24 md:py-12 px-8 sm:px-12 lg:px-20 bg-gradient-to-br from-background via-background to-secondary/10">
@@ -61,16 +72,21 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Right Side: Image */}
-      <div className="w-full md:w-1/2 relative min-h-[50vh] md:min-h-[100dvh]">
+      {/* Right Side: Image Carousel */}
+      <div className="w-full md:w-1/2 relative min-h-[50vh] md:min-h-[100dvh] overflow-hidden">
         <Reveal delay={0} className="w-full h-full absolute inset-0">
-          <Image
-            src="/images/hero_1.jpg"
-            alt="Lily and Ejoke"
-            fill
-            priority
-            className="object-cover object-center animate-image-zoom"
-          />
+          {heroImages.map((src, index) => (
+            <Image
+              key={src}
+              src={src}
+              alt="Lily and Ejoke"
+              fill
+              priority={index === 0}
+              className={`object-cover object-bottom transition-opacity duration-1000 ease-in-out absolute inset-0 ${
+                index === currentImageIndex ? 'opacity-100 z-10 animate-image-zoom' : 'opacity-0 z-0'
+              }`}
+            />
+          ))}
         </Reveal>
       </div>
 

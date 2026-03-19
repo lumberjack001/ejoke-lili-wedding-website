@@ -5,8 +5,8 @@ import { Reveal } from '@/components/ui/reveal';
 
 export function Footer() {
   return (
-    <footer className="min-h-[100dvh] w-full flex flex-col justify-center snap-start snap-always bg-gradient-to-b from-background to-secondary/10 border-t border-accent/20">
-      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
+    <footer className="h-[100dvh] overflow-y-auto no-scrollbar w-full flex flex-col snap-start snap-always bg-gradient-to-b from-background to-secondary/10 border-t border-accent/20">
+      <div className="w-full max-w-6xl mx-auto my-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-8 mb-16">
           {/* Left: Couple Names */}
           <div className="text-center md:text-left flex flex-col justify-center">

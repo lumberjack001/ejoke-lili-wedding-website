@@ -58,10 +58,10 @@ export function WeddingCountdown() {
   );
 
   return (
-    <section className="min-h-[100dvh] w-full flex flex-col justify-center py-20 sm:py-32 bg-gradient-to-b from-background to-secondary/5 px-4 sm:px-6 lg:px-8 snap-start snap-always">
-      <div className="w-full max-w-5xl mx-auto space-y-16">
+    <section className="h-[100dvh] overflow-y-auto no-scrollbar w-full flex flex-col bg-gradient-to-b from-background to-secondary/5 px-4 sm:px-6 lg:px-8 snap-start snap-always">
+      <div className="w-full max-w-5xl mx-auto my-auto py-12 space-y-16 flex flex-col items-center justify-center">
         {/* Section Header */}
-        <div className="text-center mb-12 sm:mb-16">
+        <div className="text-center w-full mb-4">
           <Reveal delay={0}>
             <h2 className="text-4xl sm:text-5xl font-serif text-foreground mb-3">
               The Countdown
