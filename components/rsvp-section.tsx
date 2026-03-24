@@ -11,32 +11,56 @@ type RSVPStatus = 'pending' | 'yes' | 'no' | 'unsure';
 
 export function RSVPSection() {
   const [status, setStatus] = useState<RSVPStatus>('pending');
+  const [showSeats, setShowSeats] = useState(false);
 
   const renderContent = () => {
     switch (status) {
       case 'yes':
+        if (showSeats) {
+          return (
+            <div className="w-full animate-fade-in">
+              <SeatReservation onBack={() => setShowSeats(false)} />
+            </div>
+          );
+        }
+
         return (
-          <div className="space-y-8">
-            <div className="text-center mb-8">
+          <div className="space-y-8 animate-fade-in">
+            <div className="text-center mb-10">
               <Reveal delay={0}>
-                <div className="inline-block rounded-full bg-primary/20 p-3 mb-4">
+                <div className="inline-block rounded-full bg-primary/20 p-3 mb-6 mt-4">
                   <Check className="w-8 h-8 text-primary" />
                 </div>
               </Reveal>
               <Reveal delay={200}>
-                <h3 className="text-3xl font-serif text-foreground mb-2">
+                <h3 className="text-3xl sm:text-4xl font-serif text-foreground mb-4">
                   We're thrilled you can make it!
                 </h3>
               </Reveal>
               <Reveal delay={400}>
-                <p className="text-muted-foreground font-light">
-                  Please select your seat below
+                <p className="text-muted-foreground font-light max-w-sm mx-auto mb-10">
+                  To complete your RSVP, please securely select your preferred table and seat.
                 </p>
               </Reveal>
+              <Reveal delay={600}>
+                <Button
+                  onClick={() => setShowSeats(true)}
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-7 text-lg font-light rounded-full shadow-lg transition-transform hover:scale-105"
+                >
+                  Select Table
+                </Button>
+              </Reveal>
+              <Reveal delay={600}>
+                <Button
+                  onClick={() => setStatus('pending')}
+                  variant="outline"
+                  className="mt-8"
+                >
+                  Back
+                </Button>
+              </Reveal>
             </div>
-            <Reveal delay={600}>
-              <SeatReservation />
-            </Reveal>
+
           </div>
         );
 
