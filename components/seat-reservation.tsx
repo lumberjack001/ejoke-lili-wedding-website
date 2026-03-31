@@ -13,7 +13,7 @@ import {
   AlertDialogHeader
 } from '@/components/ui/alert-dialog';
 import { Reveal } from '@/components/ui/reveal';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Check, X } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -41,9 +41,10 @@ const BLOCKED_TABLE_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8];
 
 interface SeatReservationProps {
   onBack?: () => void;
+  onTrouble?: () => void;
 }
 
-export function SeatReservation({ onBack }: SeatReservationProps) {
+export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
   const [tables, setTables] = useState<Table[]>([]);
   const [activeTable, setActiveTable] = useState<Table | null>(null);
   const [selectedSeat, setSelectedSeat] = useState<Seat | null>(null);
@@ -52,6 +53,8 @@ export function SeatReservation({ onBack }: SeatReservationProps) {
   const [guestEmail, setGuestEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(true);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
 
   useEffect(() => {
     async function loadSeatingData() {
@@ -118,6 +121,8 @@ export function SeatReservation({ onBack }: SeatReservationProps) {
   const handleConfirmSeat = async () => {
     if (!selectedSeat || !activeTable || !guestName || !guestEmail) return;
     setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setSubmitMessage('');
     try {
       const response = await fetch('/api/rsvp', {
         method: 'POST',
@@ -144,14 +149,14 @@ export function SeatReservation({ onBack }: SeatReservationProps) {
         return t;
       }));
 
-      setShowConfirmation(false);
-      alert(`Success! Table ${activeTable.tableNumber}, Seat ${selectedSeat.seatNumber} is reserved.`);
-      setSelectedSeat(null);
-      setActiveTable(null);
-      setGuestName('');
-      setGuestEmail('');
+      setSubmitStatus('success');
+      setSubmitMessage(`Sharp!
+        You just reserved Table ${activeTable.tableNumber}, Seat ${selectedSeat.seatNumber} all to yourself.
+
+        Can't wait to see you there!`);
     } catch (error: any) {
-      alert(error.message || 'Something went wrong.');
+      setSubmitStatus('error');
+      setSubmitMessage(error.message || 'Something went wrong.');
     } finally {
       setIsSubmitting(false);
     }
@@ -207,24 +212,34 @@ export function SeatReservation({ onBack }: SeatReservationProps) {
         </div>
 
         {!activeTable ? (
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-xl mx-auto">
-            {tables.map((table) => {
-              const isBlocked = BLOCKED_TABLE_NUMBERS.includes(table.tableNumber);
-              return (
-                <button
-                  key={table.id}
-                  onClick={() => handleTableClick(table)}
-                  disabled={table.status === 'reserved' || isBlocked}
-                  className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex flex-col items-center justify-center transition-all ${(table.status === 'reserved' || isBlocked)
-                    ? 'bg-muted border border-muted-foreground/20 cursor-not-allowed opacity-60'
-                    : 'bg-secondary/50 hover:bg-secondary border border-accent/30 cursor-pointer shadow-sm hover:scale-105'
-                    }`}
-                >
-                  <span className="text-sm font-medium">T{table.tableNumber}</span>
-                  {isBlocked && <span className="text-[8px] uppercase font-bold text-muted-foreground">VIP</span>}
-                </button>
-              );
-            })}
+          <div className="flex flex-col items-center gap-6">
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-xl mx-auto">
+              {tables.map((table) => {
+                const isBlocked = BLOCKED_TABLE_NUMBERS.includes(table.tableNumber);
+                return (
+                  <button
+                    key={table.id}
+                    onClick={() => handleTableClick(table)}
+                    disabled={table.status === 'reserved' || isBlocked}
+                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex flex-col items-center justify-center transition-all ${(table.status === 'reserved' || isBlocked)
+                      ? 'bg-muted border border-muted-foreground/20 cursor-not-allowed opacity-60'
+                      : 'bg-secondary/50 hover:bg-secondary border border-accent/30 cursor-pointer shadow-sm hover:scale-105'
+                      }`}
+                  >
+                    <span className="text-sm font-medium">T{table.tableNumber}</span>
+                    {isBlocked && <span className="text-[8px] uppercase font-bold text-muted-foreground">VIP</span>}
+                  </button>
+                );
+              })}
+            </div>
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="mt-4 mx-auto flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" /> Go back
+              </button>
+            )}
           </div>
         ) : (
           <div className="animate-fade-in space-y-10">
@@ -268,45 +283,102 @@ export function SeatReservation({ onBack }: SeatReservationProps) {
         </div>
       )}
 
-      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+      <AlertDialog open={showConfirmation} onOpenChange={(open) => {
+        if (!open) {
+          if (submitStatus === 'success') {
+            setSelectedSeat(null);
+            setActiveTable(null);
+            setGuestName('');
+            setGuestEmail('');
+          }
+          setSubmitStatus('idle');
+          setSubmitMessage('');
+        }
+        setShowConfirmation(open);
+      }}>
         <AlertDialogContent className="rounded-3xl border-accent/20 max-w-md">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="font-serif text-3xl mb-2 text-center">Confirm Your Seat</AlertDialogTitle>
-            <AlertDialogDescription className="text-center">
-              Please enter your details to reserve Table {activeTable?.tableNumber}, Seat {selectedSeat?.seatNumber}.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+          {submitStatus === 'idle' ? (
+            <>
+              <AlertDialogHeader>
+                <AlertDialogTitle className="font-serif text-3xl mb-2 text-center">Confirm Your Seat</AlertDialogTitle>
+                <AlertDialogDescription className="text-center">
+                  Please enter your details to reserve Table {activeTable?.tableNumber}, Seat {selectedSeat?.seatNumber}.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
 
-          <div className="space-y-4 my-6">
-            <input
-              type="text"
-              placeholder="Full Name"
-              value={guestName}
-              onChange={(e) => setGuestName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-accent/20 bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary/50"
-            />
-            <input
-              type="email"
-              placeholder="Email Address"
-              value={guestEmail}
-              onChange={(e) => setGuestEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-accent/20 bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary/50"
-            />
-          </div>
+              <div className="space-y-4 my-6">
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={guestName}
+                  onChange={(e) => setGuestName(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-accent/20 bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
+                <div className="space-y-1">
+                  <input
+                    type="email"
+                    placeholder="Email Address"
+                    value={guestEmail}
+                    onChange={(e) => setGuestEmail(e.target.value)}
+                    className={`w-full px-4 py-3 rounded-xl border bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      guestEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail) 
+                      ? "border-red-500/50 focus:ring-red-500/50" 
+                      : "border-accent/20"
+                    }`}
+                  />
+                  {guestEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail) && (
+                    <p className="text-xs text-red-500/90 pl-2">Please enter a valid email address.</p>
+                  )}
+                </div>
+              </div>
 
-          <AlertDialogFooter className="flex flex-col sm:flex-row gap-3">
-            <AlertDialogCancel disabled={isSubmitting} className="rounded-full">Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={(e) => {
-                e.preventDefault();
-                handleConfirmSeat();
-              }}
-              disabled={!guestName.trim() || !guestEmail.trim() || isSubmitting}
-              className="bg-primary rounded-full"
-            >
-              {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Confirm RSVP"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
+              <AlertDialogFooter className="flex flex-col sm:flex-row gap-3">
+                <AlertDialogCancel disabled={isSubmitting} className="rounded-full">Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleConfirmSeat();
+                  }}
+                  disabled={!guestName.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail) || isSubmitting}
+                  className="bg-primary hover:bg-primary/90 rounded-full"
+                >
+                  {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Confirm RSVP"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </>
+          ) : submitStatus === 'success' ? (
+            <div className="py-8 text-center flex flex-col items-center">
+              <div className="w-16 h-16 bg-green-100/50 rounded-full flex items-center justify-center mb-6 border border-green-200">
+                <Check className="w-8 h-8 text-green-600" />
+              </div>
+              <AlertDialogTitle className="text-2xl mb-2 text-center">Reservation Confirmed!</AlertDialogTitle>
+              <AlertDialogDescription className="text-center text-sm mb-8 text-muted-foreground w-80">
+                {submitMessage}
+              </AlertDialogDescription>
+              <AlertDialogAction className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-10 py-6 w-[50%] sm:w-auto text-lg" onClick={() => setShowConfirmation(false)}>
+                Awesome!
+              </AlertDialogAction>
+            </div>
+          ) : (
+            <div className="py-8 text-center flex flex-col items-center">
+              <div className="w-16 h-16 bg-red-100/50 rounded-full flex items-center justify-center mb-6 border border-red-200">
+                <X className="w-8 h-8 text-red-600" />
+              </div>
+              <AlertDialogTitle className=" text-2xl mb-2 text-center">Oops!</AlertDialogTitle>
+              <AlertDialogDescription className="text-center text-sm mb-8 text-red-600/90">
+                {submitMessage}
+              </AlertDialogDescription>
+              <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
+                <AlertDialogCancel className="rounded-full px-8 py-6 w-full sm:w-auto" onClick={() => setSubmitStatus('idle')}>Try Again</AlertDialogCancel>
+                {onTrouble && (
+                  <AlertDialogAction className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8 py-6 w-full sm:w-auto" onClick={() => { setShowConfirmation(false); onTrouble(); }}>Need help?</AlertDialogAction>
+                )}
+                {!onTrouble && (
+                  <AlertDialogAction className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8 py-6 w-full sm:w-auto " onClick={() => setShowConfirmation(false)}>Close</AlertDialogAction>
+                )}
+              </div>
+            </div>
+          )}
         </AlertDialogContent>
       </AlertDialog>
     </div>

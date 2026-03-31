@@ -81,18 +81,70 @@ export async function POST(req: Request) {
     // 7. Send Confirmation Email
     if (resend) {
       await resend.emails.send({
-        from: 'onboarding@resend.dev',
+        from: 'You Are Invited!!! <rsvp@lilywedsejoke.me>',
         to: email,
         subject: "Your Exclusive Wedding Invitation & Venue Details!",
         html: `
-          <div style="font-family: serif; text-align: center; color: #333; padding: 20px; border: 1px solid #eee;">
-            <h2 style="color: #d1bfae;">We're overjoyed you're coming, ${name}!</h2>
-            <p>Your seat has been securely reserved:</p>
-            <div style="background: #fdfaf7; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                <h3 style="margin: 0; color: #333;">Table ${tableNumber}, Seat ${seatNumber}</h3>
+          <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; color: #333333; border: 1px solid #f0f0f0; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+            <!-- Placeholder Invitation Header Image -->
+            <div style="width: 100%; height: 280px; background-color: #f9f5f0; display: block; overflow: hidden; text-align: center;">
+              <img src="https://unsplash.com/photos/text-p4IkVpz6NAA" alt="Lily & Ejoke Wedding Celebration" style="width: 100%; height: 100%; object-fit: cover;" />
             </div>
-            <p>This invitation is strictly for you. Please do not share this confirmation.</p>
-            <p style="margin-top: 40px; font-size: 12px; color: #888;">&copy; 2026 Lily & Ejoke Wedding</p>
+            
+            <div style="padding: 45px 40px;">
+              <!-- Personalized Greeting -->
+              <h1 style="color: #c79e70; text-align: center; font-family: 'Georgia', serif; font-size: 32px; font-weight: normal; margin-top: 0; letter-spacing: 0.5px;">
+                Dearest ${name.split(' ')[0]},
+              </h1>
+              
+              <p style="text-align: center; font-size: 16px; line-height: 1.6; color: #555; margin-bottom: 35px;">
+                We are absolutely overjoyed to confirm your attendance. It means the world to us to share the beginning of our forever with you by our side!
+              </p>
+
+              <!-- Elegant Reservation Box -->
+              <div style="background-color: #fdfaf7; border-left: 4px solid #c79e70; border-right: 4px solid #c79e70; padding: 25px; border-radius: 8px; margin: 35px 0; text-align: center;">
+                <p style="margin: 0 0 8px; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; color: #a48259;">
+                  Your Private Reservation
+                </p>
+                <h2 style="margin: 0; font-family: 'Georgia', serif; font-size: 26px; font-weight: normal; color: #333;">
+                  Table ${tableNumber} &nbsp;&bull;&nbsp; Seat ${seatNumber}
+                </h2>
+              </div>
+
+              <!-- Location & Map -->
+              <div style="text-align: center; margin: 45px 0;">
+                <h3 style="font-size: 18px; font-family: 'Georgia', serif; font-weight: normal; color: #333; margin-bottom: 12px;">The Venue</h3>
+                <p style="font-size: 15px; color: #666; margin-bottom: 20px;">The ceremony and reception await you at our beautiful location. Click below for exact directions.</p>
+                <a href="https://maps.google.com/?q=Wedding+Venue+Location" target="_blank" style="display: inline-block; background-color: #ffffff; color: #c79e70; border: 1px solid #c79e70; text-decoration: none; padding: 12px 28px; border-radius: 30px; font-weight: bold; font-size: 14px; letter-spacing: 1px; transition: all 0.3s;">
+                  📍 Open Google Maps
+                </a>
+              </div>
+
+              <hr style="border: 0; border-top: 1px solid #f0f0f0; margin: 40px 0;" />
+
+              <!-- YouTube Stream Highlight -->
+              <div style="text-align: center; margin: 40px 0;">
+                <h3 style="font-size: 18px; font-family: 'Georgia', serif; font-weight: normal; color: #333; margin-bottom: 12px;">Joining Virtually?</h3>
+                <p style="font-size: 15px; color: #666; margin-bottom: 24px;">Celebrate with us from anywhere in the world on our live stream. It is scheduled to start at 12:00 PM WAT(Nigerian Time) on May 16, 2026.</p>
+                <a href="https://youtube.com/live/TpxFaFDxBWQ?feature=share" target="_blank" style="display: inline-block; background-color: #c79e70; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 35px; font-weight: bold; font-size: 15px; letter-spacing: 1.5px; box-shadow: 0 4px 10px rgba(199, 158, 112, 0.4);">
+                  ▶ WATCH LIVE STREAM
+                </a>
+              </div>
+
+              <!-- Footer Notes -->
+              <div style="background-color: #fafafa; padding: 25px; border-radius: 12px; text-align: center; margin-top: 45px;">
+                <p style="margin: 0; font-size: 13px; color: #777; line-height: 1.6;">
+                  This exclusive invitation is strictly dedicated to <strong style="color: #333;">${name}</strong>.<br/>
+                  Please kindly keep your seat assignment private.
+                </p>
+              </div>
+
+              <div style="text-align: center; margin-top: 35px;">
+                <p style="font-size: 12px; color: #aaa; text-transform: uppercase; letter-spacing: 1px;">
+                  &copy; 2026 Lily & Ejoke Wedding<br/><span style="font-size: 10px;">We can't wait to see you there!</span>
+                </p>
+              </div>
+            </div>
           </div>
         `,
       });

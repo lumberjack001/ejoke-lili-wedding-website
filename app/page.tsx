@@ -1,6 +1,6 @@
 import { HeroSection } from '@/components/hero-section';
 import { WeddingCountdown } from '@/components/wedding-countdown';
-import { LoveStoryTimeline } from '@/components/love-story-timeline';
+// import { LoveStoryTimeline } from '@/components/love-story-timeline';
 import { PhotoGallery } from '@/components/photo-gallery';
 import { RSVPSection } from '@/components/rsvp-section';
 import { Footer } from '@/components/footer';
@@ -12,7 +12,7 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <WeddingCountdown />
-      <LoveStoryTimeline />
+      {/* <LoveStoryTimeline /> */}
       <PhotoGallery />
       <RSVPSection />
       <Footer />

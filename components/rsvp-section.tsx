@@ -3,15 +3,16 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { SeatReservation } from './seat-reservation';
-import { Check, X } from 'lucide-react';
+import { Check, X, AlertCircle, HelpCircle } from 'lucide-react';
 import { Reveal } from '@/components/ui/reveal';
 import Image from 'next/image';
 
-type RSVPStatus = 'pending' | 'yes' | 'no' | 'unsure';
+type RSVPStatus = 'pending' | 'yes' | 'no' | 'unsure' | 'trouble';
 
 export function RSVPSection() {
   const [status, setStatus] = useState<RSVPStatus>('pending');
   const [showSeats, setShowSeats] = useState(false);
+  const [showVirtual, setShowVirtual] = useState(false);
 
   const renderContent = () => {
     switch (status) {
@@ -19,7 +20,13 @@ export function RSVPSection() {
         if (showSeats) {
           return (
             <div className="w-full animate-fade-in">
-              <SeatReservation onBack={() => setShowSeats(false)} />
+              <SeatReservation
+                onBack={() => setShowSeats(false)}
+                onTrouble={() => {
+                  setShowSeats(false);
+                  setStatus('trouble');
+                }}
+              />
             </div>
           );
         }
@@ -78,15 +85,44 @@ export function RSVPSection() {
               </h3>
             </Reveal>
             <Reveal delay={400}>
-              <p className="text-muted-foreground font-light max-w-lg mx-auto">
+              <p className="text-muted-foreground font-light max-w-lg mx-auto mb-8">
                 We'll miss you on our special day. Your presence would have meant the world to us.
               </p>
             </Reveal>
-            <Reveal delay={600}>
+
+            {!showVirtual ? (
+              <Reveal delay={500}>
+                <div className="bg-secondary/5 p-6 sm:p-8 rounded-2xl w-full max-w-md border border-accent/20 shadow-sm mt-4">
+                  <h4 className="font-serif text-xl sm:text-2xl mb-6 text-foreground">Would you like to join virtually?</h4>
+                  <Button
+                    onClick={() => setShowVirtual(true)}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-6 text-base font-light rounded-full shadow-md transition-transform hover:scale-105"
+                  >
+                    Yes
+                  </Button>
+                </div>
+              </Reveal>
+            ) : (
+              <Reveal delay={0} className="w-full">
+                <div className="bg-secondary/5 p-6 sm:p-8 rounded-2xl w-full max-w-md border border-accent/20 animate-fade-in shadow-sm mt-4 mx-auto">
+                  <p className="text-foreground text-base font-light mb-8">
+                    The stream is scheduled to begin at <span className="font-medium font-serif">12pm on May 16th, 2026.</span>
+                  </p>
+                  <Button
+                    onClick={() => window.open('https://youtube.com/live/TpxFaFDxBWQ?feature=share', '_blank')}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-base font-light rounded-full shadow-md w-full sm:w-auto transition-transform hover:scale-105"
+                  >
+                    Click now to join the stream
+                  </Button>
+                </div>
+              </Reveal>
+            )}
+
+            <Reveal delay={800}>
               <Button
-                onClick={() => setStatus('pending')}
+                onClick={() => { setStatus('pending'); setShowVirtual(false); }}
                 variant="outline"
-                className="mt-8"
+                className="mt-10"
               >
                 Back
               </Button>
@@ -121,6 +157,53 @@ export function RSVPSection() {
                 <div className="text-left">
                   <p className="text-lg font-serif text-foreground">ITOYA SHEM</p>
                   <p className="text-muted-foreground font-light">+234 814 504 9361</p>
+                </div>
+              </Reveal>
+            </div>
+            <Reveal delay={800}>
+              <Button
+                onClick={() => setStatus('pending')}
+                variant="outline"
+                className="mt-8"
+              >
+                Back
+              </Button>
+            </Reveal>
+          </div>
+        );
+
+      case 'trouble':
+        return (
+          <div className="text-center py-12 flex flex-col items-center animate-fade-in">
+            <Reveal delay={0}>
+              <div className="inline-block rounded-full bg-orange-100 p-3 mb-4">
+                <AlertCircle className="w-8 h-8 text-orange-600" />
+              </div>
+            </Reveal>
+            <Reveal delay={200}>
+              <h3 className="text-3xl font-serif text-foreground mb-4">
+                Having trouble?
+              </h3>
+            </Reveal>
+            <Reveal delay={400}>
+              <p className="text-muted-foreground font-light max-w-lg mx-auto mb-8">
+                Need help with your reservation? You can click the phone number to place a call, or scan the QR code to start a WhatsApp chat for assistance.
+              </p>
+            </Reveal>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Reveal delay={600}>
+                <div className="text-center">
+                  <p className="text-lg font-serif text-foreground">ITOYA SHEM</p>
+                  <p className="text-muted-foreground font-light"><a href="tel:+2348145049361">+234 814 504 9361</a></p>
+                </div>
+              </Reveal>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Reveal delay={600}>
+                <div className="text-center">
+                  <div className='w-40 h-40'>
+                    <img src="/images/whatsapp-qr.png" alt="A Qr code to chat with me on whatsapp" />
+                  </div>
                 </div>
               </Reveal>
             </div>
@@ -217,6 +300,13 @@ export function RSVPSection() {
           </div>
         </div>
       </div>
+
+      <Button onClick={() => { setStatus('trouble'); setShowSeats(false); setShowVirtual(false); document.getElementById('rsvp-section')?.scrollIntoView({ behavior: 'smooth' }); }} className="fixed bottom-6 right-6 z-50 h-14 w-14 hover:w-[140px] rounded-full p-0 shadow-2xl bg-orange-100 hover:bg-orange-100  text-orange-600 transition-all duration-300 flex items-center justify-center overflow-hidden group">
+        <HelpCircle className="w-6 h-6 shrink-0" />
+        <span className="max-w-0 opacity-0 group-hover:max-w-[100px] group-hover:ml-2 group-hover:opacity-100 font-medium whitespace-nowrap transition-all duration-300 overflow-hidden">
+          Need Help?
+        </span>
+      </Button>
     </section>
   );
 }
