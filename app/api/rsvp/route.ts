@@ -81,7 +81,7 @@ export async function POST(req: Request) {
     // 7. Send Confirmation Email
     if (resend) {
       await resend.emails.send({
-        from: 'onboarding@resend.dev',
+        from: 'Reservations <rsvp@lilywedsejoke.me>',
         to: email,
         subject: "Your Exclusive Wedding Invitation & Venue Details!",
         html: `
