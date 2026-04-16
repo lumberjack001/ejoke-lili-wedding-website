@@ -197,13 +197,13 @@ export function RSVPSection() {
             </Reveal>
             <Reveal delay={600}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md mx-auto">
-                <Button 
+                <Button
                   onClick={() => window.open('tel:+2348145049361', '_self')}
                   className="bg-primary/10 hover:bg-primary/20 text-primary border-none shadow-none px-8 py-6 w-full sm:w-1/2 text-base font-medium rounded-full"
                 >
                   Call
                 </Button>
-                <Button 
+                <Button
                   onClick={() => window.open('https://wa.me/2348145049361', '_blank')}
                   className="bg-green-50 hover:bg-green-100 text-green-700 border border-green-200/50 shadow-none px-8 py-6 w-full sm:w-1/2 text-base font-medium rounded-full"
                 >
@@ -278,7 +278,7 @@ export function RSVPSection() {
         {/* Left side: Photo */}
         <Reveal delay={0} className="w-full">
           <div className="relative aspect-[3/4] w-full max-w-md mx-auto lg:max-w-none rounded-2xl overflow-hidden shadow-2xl">
-            <Image src="/images/hero_2.jpg" alt="Lily and Ejoke" fill className="object-cover" />
+            <Image src="https://res.cloudinary.com/dizxlackk/image/upload/v1776342683/hero_2_j12yuj.jpg" alt="Lily and Ejoke" fill className="object-cover" />
           </div>
         </Reveal>
 
