@@ -51,6 +51,8 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
+  const [isFamilyBooking, setIsFamilyBooking] = useState(false);
+  const [familyMembers, setFamilyMembers] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -124,6 +126,10 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
     setSubmitStatus('idle');
     setSubmitMessage('');
     try {
+      const familyNamesList = isFamilyBooking && familyMembers.trim()
+        ? familyMembers.split(',').map(n => n.trim()).filter(n => n.length > 0)
+        : [];
+
       const response = await fetch('/api/rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -132,18 +138,21 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
           email: guestEmail,
           tableNumber: activeTable.tableNumber,
           seatNumber: selectedSeat.seatNumber,
+          familyNames: familyNamesList
         }),
       });
 
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || 'Failed to process RSVP');
 
+      const assignedSeatNumbers = result.assignedSeats || [selectedSeat.seatNumber];
+
       // Update local UI
       setTables(prev => prev.map(t => {
         if (t.tableNumber === activeTable.tableNumber) {
           return {
             ...t,
-            seats: t.seats.map(s => s.seatNumber === selectedSeat.seatNumber ? { ...s, status: 'reserved' } : s)
+            seats: t.seats.map(s => assignedSeatNumbers.includes(s.seatNumber) ? { ...s, status: 'reserved' } : s)
           };
         }
         return t;
@@ -151,8 +160,8 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
 
       setSubmitStatus('success');
       setSubmitMessage(`Sharp!
-        You just reserved Table ${activeTable.tableNumber}, Seat ${selectedSeat.seatNumber} all to yourself. \n
-        please make sure to check your emails and spam for your reservation details\n
+        You just reserved Table ${activeTable.tableNumber}, ${assignedSeatNumbers.length > 1 ? `Seats ${assignedSeatNumbers.join(', ')} for you and your family.` : `Seat ${selectedSeat.seatNumber} all to yourself.`} \n
+        Please make sure to check your emails and spam for your reservation details.\n
         Can't wait to see you there!`);
     } catch (error: any) {
       setSubmitStatus('error');
@@ -298,6 +307,8 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
             setActiveTable(null);
             setGuestName('');
             setGuestEmail('');
+            setIsFamilyBooking(false);
+            setFamilyMembers('');
           }
           setSubmitStatus('idle');
           setSubmitMessage('');
@@ -337,6 +348,34 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
                     <p className="text-xs text-red-500/90 pl-2">Please enter a valid email address.</p>
                   )}
                 </div>
+
+                <div className="flex items-center space-x-2 mt-4 text-left">
+                  <input
+                    type="checkbox"
+                    id="family-booking"
+                    checked={isFamilyBooking}
+                    onChange={(e) => setIsFamilyBooking(e.target.checked)}
+                    className="w-4 h-4 rounded border-accent/20 text-primary focus:ring-primary"
+                  />
+                  <label htmlFor="family-booking" className="text-sm cursor-pointer select-none">
+                    Book for your family
+                  </label>
+                </div>
+
+                {isFamilyBooking && (
+                  <div className="space-y-1 animate-fade-in text-left">
+                    <label className="text-xs text-muted-foreground ml-1">
+                      Type the names of people coming with you (comma separated)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Jane Doe, John Doe"
+                      value={familyMembers}
+                      onChange={(e) => setFamilyMembers(e.target.value)}
+                      className="w-full px-4 py-3 mt-1 rounded-xl border border-accent/20 bg-secondary/5 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    />
+                  </div>
+                )}
               </div>
 
               <AlertDialogFooter className="flex flex-col sm:flex-row gap-3">
