@@ -151,8 +151,8 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
 
       setSubmitStatus('success');
       setSubmitMessage(`Sharp!
-        You just reserved Table ${activeTable.tableNumber}, Seat ${selectedSeat.seatNumber} all to yourself.
-
+        You just reserved Table ${activeTable.tableNumber}, Seat ${selectedSeat.seatNumber} all to yourself. \n
+        please make sure to check your emails and spam for your reservation details\n
         Can't wait to see you there!`);
     } catch (error: any) {
       setSubmitStatus('error');
@@ -189,30 +189,32 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
         <div className="mb-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6">
           <Reveal delay={0}>
             <h3 className="text-2xl sm:text-3xl font-serif text-foreground shrink-0">
-              {activeTable ? `Table ${activeTable.tableNumber} Seats` : 'Select a Table'}
+              {!activeTable ? 'Select a Table' : selectedSeat ? 'Confirm Selection' : `Table ${activeTable.tableNumber} Seats`}
             </h3>
           </Reveal>
           {/* Legend */}
-          <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-5">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-secondary/50 border border-accent/30" />
-              <span className="text-xs uppercase tracking-widest text-muted-foreground">Available</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-muted border border-muted-foreground/20 opacity-60" />
-              <span className="text-xs uppercase tracking-widest text-muted-foreground">Reserved</span>
-            </div>
-            {activeTable && (
+          {!selectedSeat && (
+            <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-5">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-primary" />
-                <span className="text-xs uppercase tracking-widest text-muted-foreground">Your Selection</span>
+                <div className="w-3 h-3 rounded-full bg-secondary/50 border border-accent/30" />
+                <span className="text-xs uppercase tracking-widest text-muted-foreground">Available</span>
               </div>
-            )}
-          </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-muted border border-muted-foreground/20 opacity-60" />
+                <span className="text-xs uppercase tracking-widest text-muted-foreground">Reserved</span>
+              </div>
+              {activeTable && (
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-primary" />
+                  <span className="text-xs uppercase tracking-widest text-muted-foreground">Your Selection</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {!activeTable ? (
-          <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col items-center gap-6 animate-fade-in">
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-xl mx-auto">
               {tables.map((table) => {
                 const isBlocked = BLOCKED_TABLE_NUMBERS.includes(table.tableNumber);
@@ -241,7 +243,7 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
               </button>
             )}
           </div>
-        ) : (
+        ) : !selectedSeat ? (
           <div className="animate-fade-in space-y-10">
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-4 max-w-sm mx-auto">
               {activeTable.seats.map((seat) => (
@@ -249,7 +251,7 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
                   key={seat.id}
                   onClick={() => handleSeatClick(seat)}
                   disabled={seat.status === 'reserved'}
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl border transition-all duration-300 flex items-center justify-center ${getSeatColor(seat.status, selectedSeat?.id === seat.id, activeTable.tableNumber)}`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl border transition-all duration-300 flex items-center justify-center ${getSeatColor(seat.status, false, activeTable.tableNumber)}`}
                 >
                   <span className="text-sm font-medium">{seat.seatNumber}</span>
                 </button>
@@ -262,26 +264,32 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
               <ArrowLeft className="w-4 h-4" /> Back to Tables
             </button>
           </div>
+        ) : (
+          <div className="text-center animate-fade-in py-10 flex flex-col items-center">
+            <Reveal delay={0}>
+              <p className="text-xl sm:text-2xl font-serif text-foreground mb-8">
+                You selected: <span className="font-bold text-primary">Table {activeTable.tableNumber}, Seat {selectedSeat.seatNumber}</span>
+              </p>
+            </Reveal>
+            <Reveal delay={200}>
+              <Button
+                onClick={() => setShowConfirmation(true)}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-7 text-lg font-light rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+              >
+                Confirm Reservation
+              </Button>
+            </Reveal>
+            <Reveal delay={400}>
+              <button
+                onClick={() => setSelectedSeat(null)}
+                className="mt-8 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" /> Change Seat
+              </button>
+            </Reveal>
+          </div>
         )}
       </div>
-
-      {selectedSeat && activeTable && (
-        <div className="text-center animate-fade-in py-6">
-          <Reveal delay={0}>
-            <p className="text-xl font-serif text-foreground mb-6">
-              You selected: <span className="font-bold text-primary">Table {activeTable.tableNumber}, Seat {selectedSeat.seatNumber}</span>
-            </p>
-          </Reveal>
-          <Reveal delay={200}>
-            <Button
-              onClick={() => setShowConfirmation(true)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-7 text-lg font-light rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all"
-            >
-              Confirm Reservation
-            </Button>
-          </Reveal>
-        </div>
-      )}
 
       <AlertDialog open={showConfirmation} onOpenChange={(open) => {
         if (!open) {
@@ -320,11 +328,10 @@ export function SeatReservation({ onBack, onTrouble }: SeatReservationProps) {
                     placeholder="Email Address"
                     value={guestEmail}
                     onChange={(e) => setGuestEmail(e.target.value)}
-                    className={`w-full px-4 py-3 rounded-xl border bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary/50 ${
-                      guestEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail) 
-                      ? "border-red-500/50 focus:ring-red-500/50" 
+                    className={`w-full px-4 py-3 rounded-xl border bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary/50 ${guestEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)
+                      ? "border-red-500/50 focus:ring-red-500/50"
                       : "border-accent/20"
-                    }`}
+                      }`}
                   />
                   {guestEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail) && (
                     <p className="text-xs text-red-500/90 pl-2">Please enter a valid email address.</p>

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Reveal } from '@/components/ui/reveal';
 
 export function KingdomHallSection() {
-  const gmapsLink = "https://maps.app.goo.gl/F9EAncRbvUzh6aF88";
+  const gmapsLink = "https://www.google.com/maps/dir/?api=1&destination=6°39'54.1\"N 3°19'36.3\"E";
 
   return (
     <section className="h-[100dvh] overflow-y-auto no-scrollbar w-full flex flex-col py-20 sm:py-32 bg-secondary/5 px-4 sm:px-6 lg:px-8 snap-start snap-always relative">
