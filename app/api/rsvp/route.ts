@@ -80,16 +80,18 @@ export async function POST(req: Request) {
 
     // 7. Send Confirmation Email
     if (resend) {
+      const receptionLink = `https://maps.app.goo.gl/7hbtrZ14sSfByCtQ7`;
       await resend.emails.send({
-        from: 'You Are Invited!!! <rsvp@lilywedsejoke.me>',
+        from: 'You Are Invited <rsvp@lilywedsejoke.me>',
         to: email,
+        cc: ['vuwill7114@gmail.com', 'onalilly2012@gmail.com'],
         subject: "Your Exclusive Wedding Invitation & Venue Details!",
         html: `
           <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; color: #333333; border: 1px solid #f0f0f0; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
             <!-- Placeholder Invitation Header Image -->
-            <div style="width: 100%; height: 280px; background-color: #f9f5f0; display: block; overflow: hidden; text-align: center;">
+            <!-- <div style="width: 100%; height: 280px; background-color: #f9f5f0; display: block; overflow: hidden; text-align: center;">
               <img src="https://unsplash.com/photos/text-p4IkVpz6NAA" alt="Lily & Ejoke Wedding Celebration" style="width: 100%; height: 100%; object-fit: cover;" />
-            </div>
+            </div> -->
             
             <div style="padding: 45px 40px;">
               <!-- Personalized Greeting -->
@@ -115,7 +117,7 @@ export async function POST(req: Request) {
               <div style="text-align: center; margin: 45px 0;">
                 <h3 style="font-size: 18px; font-family: 'Georgia', serif; font-weight: normal; color: #333; margin-bottom: 12px;">The Venue</h3>
                 <p style="font-size: 15px; color: #666; margin-bottom: 20px;">The ceremony and reception await you at our beautiful location. Click below for exact directions.</p>
-                <a href="https://maps.google.com/?q=Wedding+Venue+Location" target="_blank" style="display: inline-block; background-color: #ffffff; color: #c79e70; border: 1px solid #c79e70; text-decoration: none; padding: 12px 28px; border-radius: 30px; font-weight: bold; font-size: 14px; letter-spacing: 1px; transition: all 0.3s;">
+                <a href="${receptionLink}" target="_blank" style="display: inline-block; background-color: #ffffff; color: #c79e70; border: 1px solid #c79e70; text-decoration: none; padding: 12px 28px; border-radius: 30px; font-weight: bold; font-size: 14px; letter-spacing: 1px; transition: all 0.3s;">
                   📍 Open Google Maps
                 </a>
               </div>
