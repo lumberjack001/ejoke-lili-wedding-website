@@ -46,8 +46,10 @@ export function Footer() {
               </p>
             </Reveal>
             <Reveal delay={1000}>
-              <p className="text-muted-foreground font-light">
-                To be Delivered Via E-mail <br /> Once seat reservation is confirmed.
+              <p className="text-muted-foreground font-light leading-relaxed">
+                Kingdom Hall of Jehovah's Witnesses <br />
+                #26 Alhaji Mustapha Street, Iju Ishaga <br />
+                Lagos State
               </p>
             </Reveal>
           </div>
