@@ -20,7 +20,7 @@ export function HeroSection() {
           muted
           playsInline
           className="w-full h-full object-cover object-[center_30%] transition-transform duration-[1500ms] ease-out scale-100 group-hover:scale-110"
-          poster="/images/hero_3.jpg"
+          poster="https://res.cloudinary.com/dizxlackk/image/upload/v1776342684/hero_3_a94a3a.jpg"
         >
           {/* Online video link */}
           <source src="https://res.cloudinary.com/dizxlackk/video/upload/v1776300697/IMG_7312_h4vkfm.mov" type="video/mp4" />
