@@ -1,9 +1,7 @@
-// =============================
-// IMAGE UPLOAD (Styled Version)
-// =============================
 "use client";
+export const dynamic = "force-dynamic";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import supabase from "../../app/config/supabaseClient";
