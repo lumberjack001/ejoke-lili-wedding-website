@@ -1,18 +1,69 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { SeatReservation } from './seat-reservation';
-import { Check, X, AlertCircle, HelpCircle } from 'lucide-react';
+import { Check, X, AlertCircle, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Reveal } from '@/components/ui/reveal';
 import Image from 'next/image';
+import supabase from '@/app/config/supabaseClient';
 
 type RSVPStatus = 'pending' | 'yes' | 'no' | 'unsure' | 'trouble';
+
+interface CarouselImage {
+  id: number;
+  src: string;
+  alt: string;
+}
 
 export function RSVPSection() {
   const [status, setStatus] = useState<RSVPStatus>('pending');
   const [showSeats, setShowSeats] = useState(false);
   const [showVirtual, setShowVirtual] = useState(false);
+
+  // ── Carousel state ────────────────────────────────────────────────
+  const [carouselImages, setCarouselImages] = useState<CarouselImage[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const { data, error } = await supabase
+        .from('image_upload')
+        .select('id,title,image')
+        .order('created_at', { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        setCarouselImages(
+          data.map((item: any) => ({
+            id: item.id,
+            src: item.image,
+            alt: item.title || 'Wedding moment',
+          }))
+        );
+      }
+    };
+
+    fetchImages();
+  }, []);
+
+  // Auto-advance every 4 s
+  useEffect(() => {
+    if (carouselImages.length < 2) return;
+    intervalRef.current = setInterval(() => {
+      setActiveIndex(prev => (prev + 1) % carouselImages.length);
+    }, 4000);
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  }, [carouselImages]);
+
+  const goTo = (idx: number) => {
+    setActiveIndex((idx + carouselImages.length) % carouselImages.length);
+    // Reset timer on manual nav
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setActiveIndex(prev => (prev + 1) % carouselImages.length);
+    }, 4000);
+  };
 
   const renderContent = () => {
     switch (status) {
@@ -275,10 +326,67 @@ export function RSVPSection() {
       className="h-[100dvh] overflow-y-auto no-scrollbar w-full flex flex-col py-20 sm:py-32 bg-white px-4 sm:px-6 lg:px-8 snap-start snap-always overflow-x-hidden relative"
     >
       <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-        {/* Left side: Photo */}
+        {/* Left side: Photo Carousel */}
         <Reveal delay={0} className="w-full">
-          <div className="relative aspect-[3/4] w-full max-w-md mx-auto lg:max-w-none rounded-2xl overflow-hidden shadow-2xl">
-            <Image src="https://res.cloudinary.com/dizxlackk/image/upload/v1776342683/hero_2_j12yuj.jpg" alt="Lily and Ejoke" fill className="object-cover" />
+          <div className="relative aspect-[5/5] w-full max-w-md mx-auto lg:max-w-none rounded-2xl overflow-hidden shadow-2xl group">
+
+            {/* Images — crossfade */}
+            {carouselImages.length > 0 ? (
+              carouselImages.map((img, i) => (
+                <Image
+                  key={img.id}
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover transition-opacity duration-700"
+                  style={{ opacity: i === activeIndex ? 1 : 0 }}
+                  priority={i === 0}
+                />
+              ))
+            ) : (
+              // Fallback to original image while loading
+              <Image
+                src="https://res.cloudinary.com/dizxlackk/image/upload/v1776342683/hero_2_j12yuj.jpg"
+                alt="Lily and Ejoke"
+                fill
+                className="object-cover"
+              />
+            )}
+
+            {/* Prev / Next arrows — only show when there are multiple images */}
+            {carouselImages.length > 1 && (
+              <>
+                <button
+                  onClick={() => goTo(activeIndex - 1)}
+                  aria-label="Previous photo"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 rounded-full bg-black/25 hover:bg-black/45 backdrop-blur-sm transition-colors p-2 opacity-0 group-hover:opacity-100"
+                >
+                  <ChevronLeft className="w-5 h-5 text-white" />
+                </button>
+                <button
+                  onClick={() => goTo(activeIndex + 1)}
+                  aria-label="Next photo"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 rounded-full bg-black/25 hover:bg-black/45 backdrop-blur-sm transition-colors p-2 opacity-0 group-hover:opacity-100"
+                >
+                  <ChevronRight className="w-5 h-5 text-white" />
+                </button>
+
+                {/* Dot indicators */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
+                  {carouselImages.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => goTo(i)}
+                      aria-label={`Go to photo ${i + 1}`}
+                      className={`rounded-full transition-all duration-300 ${i === activeIndex
+                        ? 'bg-white w-4 h-2'
+                        : 'bg-white/50 w-2 h-2'
+                        }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </Reveal>
 
