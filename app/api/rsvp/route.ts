@@ -205,7 +205,7 @@ export async function POST(req: Request) {
       // 10. Send Admin Push Notification
       await resend.emails.send({
         from: 'RSVP Alert <rsvp@lilywedsejoke.me>',
-        to: ['vuwill7114@gmail.com', 'onalilly2012@gmail.com', 'itoya.shem2017@gmail.com'],
+        to: ['vuwill7114@gmail.com', 'onalilly2012@gmail.com', 'itoya.shem2017@gmail.com', 'akarajoy@coscharis-tech.com'],
         subject: `🚨 New RSVP: ${name} reserved ${totalSeatsRequired} seat(s)!`,
         html: `
           <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 25px; border: 1px solid #e0e0e0; border-radius: 12px; background-color: #ffffff;">
