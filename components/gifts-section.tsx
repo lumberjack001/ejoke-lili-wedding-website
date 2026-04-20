@@ -69,12 +69,14 @@ export function GiftsSection() {
               we begin this new chapter together.
             </p>
           </Reveal>
+        </div>
 
-          {/* Hint – only when idle */}
+        {/* Hint – only when idle */}
+        <div className="flex items-center justify-center p-25">
           <div style={{ minHeight: 28 }}>
             {state === 'idle' && (
               <Reveal delay={250}>
-                <p className="text-xs sm:text-sm text-muted-foreground font-light animate-pulse">
+                <p className="text-lg text-muted-foreground font-light animate-pulse">
                   Click the envelope to reveal account details ✉️
                 </p>
               </Reveal>
@@ -338,6 +340,30 @@ export function GiftsSection() {
                         {/* Fold edge line */}
                         <path d={`M0 0 L${MX} ${FLAPH} L${W} 0`} fill="none" stroke={C.border} strokeWidth="2.5" />
                       </svg>
+
+                      {/* flick.gif — centred on the flap triangle, fades out on open */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/flick.gif"
+                        alt="tap to open"
+                        style={{
+                          position: 'absolute',
+                          // Horizontally centred
+                          left: '50%',
+                          // Vertically: ~ 55% down the flap height puts it near the tip
+                          top: '55%',
+                          transform: 'translate(-50%, -50%)',
+                          // Responsive size: roughly 18% of the envelope width
+                          width: 'clamp(36px, 10%, 60px)',
+                          height: 'auto',
+                          opacity: isOpen ? 0 : 1,
+                          transition: 'opacity 0.3s ease',
+                          pointerEvents: 'none',
+                          userSelect: 'none',
+                          // Clip the gif so it doesn't bleed outside the triangle clip area
+                          objectFit: 'contain',
+                        }}
+                      />
                     </div>
 
                     {/* BACK face – shown when OPEN (inside of flap, now pointing UP) */}
