@@ -347,7 +347,7 @@ export function RSVPSection() {
               // Fallback to original image while loading
               <Image
                 src="https://res.cloudinary.com/dizxlackk/image/upload/v1776342683/hero_2_j12yuj.jpg"
-                alt="Lily and Ejoke"
+                alt="Lilyfield and Ejoke"
                 fill
                 className="object-cover"
               />
