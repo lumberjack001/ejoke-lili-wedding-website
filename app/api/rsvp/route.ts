@@ -174,6 +174,17 @@ export async function POST(req: Request) {
                 </a>
               </div>
 
+              <hr style="border: 0; border-top: 1px solid #f0f0f0; margin: 40px 0;" />
+
+              <div style="text-align: center; margin: 40px 0;">
+                <h3 style="font-size: 18px; font-family: 'Georgia', serif; font-weight: normal; color: #333; margin-bottom: 12px;">Wedding Programme</h3>
+                <p style="font-size: 15px; color: #666; margin-bottom: 24px;">Stay in the know — download the full order of events for the day so you don't miss a moment.</p>
+                <!-- TODO: Replace the href below with your Cloudinary PDF/image link -->
+                <a href="https://drive.google.com/file/d/1kjA9zyTGGOWhD273q97Qf0IzDX3MQ4-Z/view?usp=sharing" target="_blank" download style="display: inline-block; background-color: #ffffff; color: #c79e70; border: 2px solid #c79e70; text-decoration: none; padding: 14px 32px; border-radius: 35px; font-weight: bold; font-size: 15px; letter-spacing: 1.5px;">
+                  Download Programme
+                </a>
+              </div>
+
               <div style="background-color: #fafafa; padding: 25px; border-radius: 12px; text-align: center; margin-top: 45px;">
                 <p style="margin: 0; font-size: 13px; color: #777; line-height: 1.6;">
                   This exclusive invitation is strictly dedicated to <strong style="color: #333;">${name}${familyNames.length > 0 ? ` & Family` : ''}</strong>.<br/>
