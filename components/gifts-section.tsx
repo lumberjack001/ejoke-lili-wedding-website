@@ -72,11 +72,11 @@ export function GiftsSection() {
         </div>
 
         {/* Hint – only when idle */}
-        <div className="flex items-center justify-center p-25">
+        <div className="flex flex-col items-center justify-center gap-3 mt-4">
           <div style={{ minHeight: 28 }}>
             {state === 'idle' && (
               <Reveal delay={250}>
-                <p className="text-lg text-muted-foreground font-light animate-pulse">
+                <p className="text-lg text-muted-foreground font-light animate-pulse text-center">
                   Click the envelope to reveal account details ✉️
                 </p>
               </Reveal>
