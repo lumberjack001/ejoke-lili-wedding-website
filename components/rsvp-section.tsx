@@ -157,7 +157,7 @@ export function RSVPSection() {
               <Reveal delay={0} className="w-full">
                 <div className="bg-secondary/5 p-6 sm:p-8 rounded-2xl w-full max-w-md border border-accent/20 animate-fade-in shadow-sm mt-4 mx-auto">
                   <p className="text-foreground text-base font-light mb-8">
-                    The stream is scheduled to begin at <span className="font-medium font-serif">12pm on May 16th, 2026.</span>
+                    The stream is scheduled to begin at <span className="font-medium font-serif">11am on May 16th, 2026.</span>
                   </p>
                   <Button
                     onClick={() => window.open('https://youtube.com/live/TpxFaFDxBWQ?feature=share', '_blank')}
