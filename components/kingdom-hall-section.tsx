@@ -41,7 +41,7 @@ export function KingdomHallSection() {
                     <h3 className="text-xl font-serif text-foreground mb-2">Location</h3>
                     <p className="text-muted-foreground font-bold leading-relaxed">
                       Kingdom Hall of Jehovah's Witnesses<br />
-                      #26 Alhaji Mustapha Street, Iju Ishaga<br />
+                      #26 Alhaji Mustapha Street, Off Una Street, Balogun Bus Stop, Iju Ishaga<br />
                       Lagos State
                     </p>
                   </div>
