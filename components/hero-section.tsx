@@ -4,10 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Reveal } from '@/components/ui/reveal';
 
 export function HeroSection() {
-  const scrollToInvitation = () => {
-    const element = document.getElementById('rsvp-section');
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <section className="relative w-full min-h-[100dvh] overflow-hidden snap-start snap-always flex flex-col lg:flex-row bg-background cursor-default">
@@ -53,12 +49,16 @@ export function HeroSection() {
 
             {/* CTA Button */}
             <Reveal delay={900}>
-              <Button
-                onClick={scrollToInvitation}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-xs sm:text-sm font-light rounded-full shadow-lg transition-transform hover:scale-105 uppercase tracking-[0.15em]"
+              <a
+                href="/wedding_invite_updated.png"
+                download="Lily_and_Ejoke_Wedding_Invite.png"
               >
-                View Invitation
-              </Button>
+                <Button
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-xs sm:text-sm font-light rounded-full shadow-lg transition-transform hover:scale-105 uppercase tracking-[0.15em]"
+                >
+                  View Invitation
+                </Button>
+              </a>
             </Reveal>
           </div>
         </div>
