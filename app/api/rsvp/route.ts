@@ -125,7 +125,7 @@ export async function POST(req: Request) {
     // 9. Send Confirmation Email to guests
     if (resend) {
       await resend.emails.send({
-        from: 'You Are Invited!!! <rsvp@lilywedsejoke.me>',
+        from: 'Lilyfield & Ejoke <rsvp@lilywedsejoke.me>',
         to: email,
         subject: "Your Exclusive Wedding Invitation & Venue Details!",
         html: `
@@ -194,7 +194,7 @@ export async function POST(req: Request) {
 
               <div style="text-align: center; margin-top: 35px;">
                 <p style="font-size: 12px; color: #aaa; text-transform: uppercase; letter-spacing: 1px;">
-                  &copy; 2026 Lily & Ejoke Wedding<br/><span style="font-size: 10px;">We can't wait to see you there!</span>
+                  &copy; 2026 Lilyfield & Ejoke Wedding<br/><span style="font-size: 10px;">We can't wait to see you there!</span>
                 </p>
               </div>
             </div>
@@ -230,7 +230,7 @@ export async function POST(req: Request) {
             </div>
             
             <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;">
-              <p style="font-size: 12px; color: #aaa; text-align: center; margin: 0;">❤️Ejoke & Lily Wedding System Alert</p>
+              <p style="font-size: 12px; color: #aaa; text-align: center; margin: 0;">❤️Ejoke & Lilyfield Wedding System Alert</p>
             </div>
           </div>
         `,
