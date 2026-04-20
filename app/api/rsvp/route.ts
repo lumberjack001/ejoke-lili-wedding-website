@@ -168,7 +168,7 @@ export async function POST(req: Request) {
 
               <div style="text-align: center; margin: 40px 0;">
                 <h3 style="font-size: 18px; font-family: 'Georgia', serif; font-weight: normal; color: #333; margin-bottom: 12px;">Joining Virtually?</h3>
-                <p style="font-size: 15px; color: #666; margin-bottom: 24px;">Celebrate with us from anywhere in the world on our live stream. It is scheduled to start at 12:00 PM WAT(Nigerian Time) on May 16, 2026.</p>
+                <p style="font-size: 15px; color: #666; margin-bottom: 24px;">Celebrate with us from anywhere in the world on our live stream. It is scheduled to start at 11:00 AM WAT(Nigerian Time) on May 16, 2026.</p>
                 <a href="https://youtube.com/live/TpxFaFDxBWQ?feature=share" target="_blank" style="display: inline-block; background-color: #c79e70; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 35px; font-weight: bold; font-size: 15px; letter-spacing: 1.5px; box-shadow: 0 4px 10px rgba(199, 158, 112, 0.4);">
                   ▶ WATCH LIVE STREAM
                 </a>
