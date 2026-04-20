@@ -12,7 +12,7 @@ export function Footer() {
           <div className="text-center md:text-left flex flex-col justify-center">
             <Reveal delay={0}>
               <h3 className="text-3xl font-serif text-foreground mb-4">
-                Lily & Ejoke
+                Lilyfield & Ejoke
               </h3>
             </Reveal>
             <Reveal delay={200}>
@@ -69,7 +69,7 @@ export function Footer() {
           </Reveal>
           <Reveal delay={1400}>
             <p className="text-xs text-muted-foreground font-light tracking-wide">
-              © 2026 Lily & Ejoke. All rights reserved.
+              © 2026 Lilyfield & Ejoke. All rights reserved.
             </p>
           </Reveal>
         </div>
