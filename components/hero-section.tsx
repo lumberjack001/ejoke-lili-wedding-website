@@ -9,7 +9,7 @@ export function HeroSection() {
     <section className="relative w-full min-h-[100dvh] overflow-hidden snap-start snap-always flex flex-col lg:flex-row bg-background cursor-default">
       {/* Left side: Text Content */}
       <div className="w-full lg:w-[45%] xl:w-[40%] flex flex-col justify-center px-8 sm:px-12 md:px-16 lg:px-24 py-16 lg:py-0 z-10 min-h-[55dvh] lg:min-h-[100dvh] order-2 lg:order-1 bg-white relative shadow-[10px_0_30px_rgba(0,0,0,0.05)]">
-        
+
         <div className="w-full max-w-xl mx-auto flex flex-col items-start text-left relative z-10">
           {/* Tagline */}
           <Reveal delay={100}>
@@ -83,12 +83,12 @@ export function HeroSection() {
           muted
           playsInline
           className="w-full h-full object-cover object-[center_30%] transition-transform duration-[2000ms] ease-out scale-100 group-hover:scale-105"
-          poster="https://res.cloudinary.com/dizxlackk/image/upload/v1776342684/hero_3_a94a3a.jpg"
+          poster="/images/poster.jpeg"
         >
           <source src="https://res.cloudinary.com/dizxlackk/video/upload/v1776300697/IMG_7312_h4vkfm.mov" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        
+
         {/* Transparent overlay with subtle blur to reduce video sharpness */}
         <div className="absolute inset-0 bg-black/15 backdrop-blur-[3px] transition-all duration-1000 group-hover:backdrop-blur-[1px] pointer-events-none" />
       </div>

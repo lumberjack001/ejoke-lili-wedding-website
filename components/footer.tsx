@@ -48,7 +48,7 @@ export function Footer() {
             <Reveal delay={1000}>
               <p className="text-muted-foreground font-light leading-relaxed">
                 Kingdom Hall of Jehovah's Witnesses <br />
-                #26 Alhaji Mustapha Street, Off Una Street, Balogun Bus Stop, Iju Ishaga <br />
+                #26 Alhaji Mustapha Street, Off U.N.A Street, Balogun Bus Stop, Iju Ishaga <br />
                 Lagos State
               </p>
             </Reveal>
