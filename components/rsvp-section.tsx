@@ -8,7 +8,7 @@ import { Reveal } from '@/components/ui/reveal';
 import Image from 'next/image';
 import supabase from '@/app/config/supabaseClient';
 
-type RSVPStatus = 'pending' | 'yes' | 'no' | 'unsure' | 'trouble';
+type RSVPStatus = 'pending' | 'yes' | 'no' | 'unsure' | 'trouble' | 'closed';
 
 interface CarouselImage {
   id: number;
@@ -274,6 +274,63 @@ export function RSVPSection() {
           </div>
         );
 
+      case 'closed':
+        return (
+          <div className="text-center py-12 flex flex-col items-center animate-fade-in">
+            <Reveal delay={0}>
+              <div className="inline-block rounded-full bg-orange-100 p-3 mb-4">
+                <AlertCircle className="w-8 h-8 text-orange-600" />
+              </div>
+            </Reveal>
+            <Reveal delay={200}>
+              <h3 className="text-3xl font-serif text-foreground mb-4">
+                Reservations Closed
+              </h3>
+            </Reveal>
+            <Reveal delay={400}>
+              <p className="text-muted-foreground font-light max-w-lg mx-auto mb-6">
+                Thank you for your interest! Unfortunately, all seats have been booked and reservations are now closed.
+              </p>
+            </Reveal>
+            {!showVirtual ? (
+              <Reveal delay={500}>
+                <div className="bg-secondary/5 p-6 sm:p-8 rounded-2xl w-full max-w-md border border-accent/20 shadow-sm mt-4">
+                  <h4 className="font-serif text-xl sm:text-2xl mb-6 text-foreground">Would you like to join virtually?</h4>
+                  <Button
+                    onClick={() => setShowVirtual(true)}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-6 text-base font-light rounded-full shadow-md transition-transform hover:scale-105"
+                  >
+                    Yes
+                  </Button>
+                </div>
+              </Reveal>
+            ) : (
+              <Reveal delay={0} className="w-full">
+                <div className="bg-secondary/5 p-6 sm:p-8 rounded-2xl w-full max-w-md border border-accent/20 animate-fade-in shadow-sm mt-4 mx-auto">
+                  <p className="text-foreground text-base font-light mb-8">
+                    The stream is scheduled to begin at <span className="font-medium font-serif">11am on May 16th, 2026.</span>
+                  </p>
+                  <Button
+                    onClick={() => window.open('https://youtube.com/live/TpxFaFDxBWQ?feature=share', '_blank')}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-base font-light rounded-full shadow-md w-full sm:w-auto transition-transform hover:scale-105"
+                  >
+                    Click now to join the stream
+                  </Button>
+                </div>
+              </Reveal>
+            )}
+            <Reveal delay={800}>
+              <Button
+                onClick={() => { setStatus('pending'); setShowVirtual(false); }}
+                variant="outline"
+                className="mt-8"
+              >
+                Back
+              </Button>
+            </Reveal>
+          </div>
+        );
+
       default:
         return (
           <div className="text-center">
@@ -290,7 +347,7 @@ export function RSVPSection() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Reveal delay={800}>
                 <Button
-                  onClick={() => setStatus('yes')}
+                  onClick={() => setStatus('closed')}
                   className="bg-primary flex-1 hover:bg-primary/90 w-full sm:w-auto text-primary-foreground px-8 py-6 text-base font-light"
                 >
                   Yes, I'll be there
